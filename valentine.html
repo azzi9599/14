@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will you be my Valentine? 💕</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --pink-light: #ffb6c1;
+      --pink: #ff69b4;
+      --pink-deep: #ff1493;
+      --pink-pale: #ffc0cb;
+      --white: #fffaf5;
+      --shadow: rgba(255, 105, 180, 0.3);
+    }
+
+    html, body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(165deg, #fff0f5 0%, #ffe4ec 25%, #ffd6e0 50%, #ffc8d4 75%, #ffb6c1 100%);
+      color: #5c2d4a;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hearts-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.25;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .heart:nth-child(1) { left: 5%; top: 10%; animation-delay: 0s; }
+    .heart:nth-child(2) { left: 85%; top: 15%; animation-delay: 1s; }
+    .heart:nth-child(3) { left: 15%; top: 60%; animation-delay: 2s; }
+    .heart:nth-child(4) { left: 75%; top: 55%; animation-delay: 0.5s; }
+    .heart:nth-child(5) { left: 45%; top: 25%; animation-delay: 1.5s; }
+    .heart:nth-child(6) { left: 25%; top: 80%; animation-delay: 2.5s; }
+    .heart:nth-child(7) { left: 90%; top: 70%; animation-delay: 0.8s; }
+    .heart:nth-child(8) { left: 8%; top: 40%; animation-delay: 1.8s; }
+    .heart:nth-child(9) { left: 70%; top: 35%; animation-delay: 2.2s; }
+    .heart:nth-child(10) { left: 50%; top: 85%; animation-delay: 0.3s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-12px) scale(1.05); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 240, 245, 0.95) 100%);
+      border-radius: 2rem;
+      padding: 2rem 1.5rem;
+      max-width: 22rem;
+      width: 100%;
+      box-shadow: 0 12px 40px var(--shadow), 0 0 0 1px rgba(255, 182, 193, 0.4);
+      animation: cardIn 0.6s ease-out;
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .question-wrap {
+      margin-bottom: 1.75rem;
+    }
+
+    h1 {
+      font-size: clamp(1.35rem, 5vw, 1.6rem);
+      font-weight: 700;
+      color: var(--pink-deep);
+      line-height: 1.4;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .sub {
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #8b5a6b;
+      font-weight: 500;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 0.85rem 1.5rem;
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-yes {
+      background: linear-gradient(145deg, var(--pink-deep), var(--pink));
+      color: white;
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    .btn-yes:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 28px rgba(255, 20, 147, 0.45);
+    }
+
+    .btn-no {
+      background: linear-gradient(145deg, #e8d5dc, #f0dde5);
+      color: #8b5a6b;
+      box-shadow: 0 4px 14px rgba(139, 90, 107, 0.2);
+      position: relative;
+      transition: left 0.15s, top 0.15s;
+    }
+
+    .btn-no:hover {
+      transform: scale(1.02);
+    }
+
+    /* Success state */
+    .success {
+      display: none;
+      animation: cardIn 0.5s ease-out;
+    }
+
+    .success.show {
+      display: block;
+    }
+
+    .question-wrap.hide {
+      display: none;
+    }
+
+    /* Unique Yes: Heart locket that opens */
+    .locket-wrap {
+      perspective: 400px;
+      margin: 0 auto 1rem;
+    }
+
+    .locket {
+      position: relative;
+      width: 140px;
+      height: 120px;
+      margin: 0 auto;
+      transform-style: preserve-3d;
+    }
+
+    .locket-half {
+      position: absolute;
+      width: 70px;
+      height: 120px;
+      top: 0;
+      background: linear-gradient(145deg, #ff9eb5 0%, #ff6b8a 50%, #ff1493 100%);
+      border-radius: 70px 70px 0 0;
+      transform-origin: left center;
+      transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: inset 2px 2px 0 rgba(255,255,255,0.3), 4px 4px 12px rgba(0,0,0,0.2);
+      border: 3px solid rgba(255,255,255,0.4);
+    }
+
+    .locket-half::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 66px 66px 0 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2) 100%);
+      pointer-events: none;
+    }
+
+    .locket-half.left {
+      left: 0;
+      border-radius: 70px 0 0 70px;
+      border-right: none;
+    }
+
+    .locket-half.right {
+      right: 0;
+      left: auto;
+      border-radius: 0 70px 70px 0;
+      border-left: none;
+      transform-origin: right center;
+    }
+
+    .success.show .locket-half.left {
+      transform: rotateY(-75deg);
+    }
+
+    .success.show .locket-half.right {
+      transform: rotateY(75deg);
+    }
+
+    .locket-inner {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.6s ease 0.3s;
+    }
+
+    .success.show .locket-inner {
+      opacity: 1;
+    }
+
+    .locket-inner .heart-icon {
+      font-size: 2rem;
+      margin-bottom: 0.25rem;
+      animation: pulse 0.8s ease-in-out infinite alternate;
+    }
+
+    .locket-inner .locket-text {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--pink-deep);
+      line-height: 1.2;
+      max-width: 90px;
+      text-shadow: 0 0 0 rgba(255,255,255,0.5);
+    }
+
+    .success-title {
+      font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+      color: var(--pink-deep);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .success p {
+      color: #6b3d5a;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Fun cute celebration header */
+    .success-yay {
+      font-size: clamp(1.8rem, 6vw, 2.5rem);
+      font-weight: 700;
+      color: var(--pink-deep);
+      margin-bottom: 0.25rem;
+      animation: bounceIn 0.6s ease-out, yayBounce 0.8s ease-in-out 0.7s infinite;
+      text-shadow: 0 2px 0 rgba(255,255,255,0.8);
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes yayBounce {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.05) translateY(-4px); }
+    }
+
+    .hearts-ring {
+      display: flex;
+      justify-content: center;
+      gap: 0.35rem;
+      margin: 0.75rem 0;
+      flex-wrap: wrap;
+      max-width: 220px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hearts-ring span {
+      font-size: 1.5rem;
+      animation: heartPop 0.5s ease-out backwards, heartFloat 1.5s ease-in-out infinite;
+    }
+
+    .hearts-ring span:nth-child(1) { animation-delay: 0.1s, 0.5s; }
+    .hearts-ring span:nth-child(2) { animation-delay: 0.15s, 0.6s; }
+    .hearts-ring span:nth-child(3) { animation-delay: 0.2s, 0.7s; }
+    .hearts-ring span:nth-child(4) { animation-delay: 0.25s, 0.8s; }
+    .hearts-ring span:nth-child(5) { animation-delay: 0.3s, 0.9s; }
+    .hearts-ring span:nth-child(6) { animation-delay: 0.35s, 1s; }
+    .hearts-ring span:nth-child(7) { animation-delay: 0.4s, 1.1s; }
+    .hearts-ring span:nth-child(8) { animation-delay: 0.45s, 1.2s; }
+
+    @keyframes heartPop {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes heartFloat {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.15) translateY(-3px); }
+    }
+
+    .hearts-burst {
+      font-size: 1.75rem;
+      margin: 0.5rem 0;
+      letter-spacing: 0.2rem;
+      animation: pulse 0.8s ease-in-out infinite alternate;
+    }
+
+    .success-tagline {
+      font-size: 0.9rem;
+      color: #8b5a6b;
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); opacity: 0.9; }
+      to { transform: scale(1.1); opacity: 1; }
+    }
+
+    /* Confetti: fall + burst */
+    .celebration {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    .celebration span {
+      position: absolute;
+      font-size: 1.1rem;
+      opacity: 0.95;
+      pointer-events: none;
+    }
+
+    .celebration span.fall {
+      animation: fall 4s linear forwards;
+    }
+
+    .celebration span.burst {
+      left: 50% !important;
+      top: 50% !important;
+      animation: burst 2.5s ease-out forwards;
+    }
+
+    .celebration span.sparkle {
+      font-size: 1.25rem;
+      animation: sparkleFall 3.5s ease-in forwards;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0.95;
+      }
+      100% {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0.2;
+      }
+    }
+
+    @keyframes burst {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--bx), var(--by)) scale(1);
+        opacity: 0.15;
+      }
+    }
+
+    @keyframes sparkleFall {
+      0% {
+        transform: translateY(-20px) scale(0);
+        opacity: 1;
+      }
+      20% { opacity: 1; }
+      100% {
+        transform: translate(var(--sx), 110vh) rotate(360deg);
+        opacity: 0.2;
+      }
+    }
+
+    /* No messages when they try to click No */
+    .no-msg {
+      font-size: 0.85rem;
+      color: var(--pink-deep);
+      margin-top: 0.75rem;
+      font-weight: 600;
+      min-height: 1.5em;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .no-msg.show {
+      opacity: 1;
+      animation: wiggle 0.4s ease;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    /* Crying Hello Kitty */
+    .crying-kitty {
+      display: none;
+      margin-top: 1.25rem;
+      animation: kittyIn 0.5s ease-out;
+    }
+
+    .crying-kitty.show {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    @keyframes kittyIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .kitty-character {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      animation: cryBounce 1.2s ease-in-out infinite;
+    }
+
+    .kitty-character img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .kitty-tears {
+      position: absolute;
+      bottom: 8%;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 28%;
+      pointer-events: none;
+    }
+
+    .kitty-tear {
+      width: 8px;
+      height: 12px;
+      background: linear-gradient(180deg, rgba(180, 220, 255, 0.9) 0%, rgba(150, 200, 255, 0.7) 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      transform: rotate(-20deg);
+      animation: tearDrop 1.5s ease-in-out infinite;
+    }
+
+    .kitty-tear:last-child {
+      animation-delay: 0.3s;
+      transform: rotate(20deg);
+    }
+
+    @keyframes tearDrop {
+      0%, 100% { opacity: 0.8; transform: translateY(0) scale(1); }
+      50% { opacity: 1; transform: translateY(6px) scale(1.1); }
+    }
+
+    @keyframes cryBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .kitty-speech {
+      background: white;
+      color: #5c2d4a;
+      padding: 0.65rem 1rem;
+      border-radius: 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      max-width: 18rem;
+      box-shadow: 0 4px 16px var(--shadow), 0 0 0 2px rgba(255, 182, 193, 0.5);
+      position: relative;
+    }
+
+    .kitty-speech::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-bottom-color: white;
+    }
+
+    .kitty-speech::after {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 10px solid transparent;
+      border-bottom-color: rgba(255, 182, 193, 0.4);
+    }
+
+    /* Open on mobile link - only on desktop */
+    .mobile-link-wrap {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      font-size: 0.8rem;
+      color: #8b5a6b;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 0.5rem 0.75rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 4px 16px var(--shadow);
+      display: none;
+    }
+    @media (min-width: 768px) {
+      .mobile-link-wrap { display: block; }
+    }
+    .mobile-link-wrap a {
+      color: var(--pink-deep);
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    /* Responsive tweaks for very small screens */
+    @media (max-width: 360px) {
+      .card {
+        padding: 1.5rem 1rem;
+      }
+      .btn {
+        padding: 0.75rem 1.2rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts-bg" aria-hidden="true">
+    <span class="heart">💕</span>
+    <span class="heart">💗</span>
+    <span class="heart">💖</span>
+    <span class="heart">💕</span>
+    <span class="heart">💗</span>
+    <span class="heart">💖</span>
+    <span class="heart">💕</span>
+    <span class="heart">💗</span>
+    <span class="heart">💖</span>
+    <span class="heart">💕</span>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="question-wrap">
+        <h1>Will you be my Valentine?</h1>
+        <p class="sub">Pick one… I hope it’s the pink one 💕</p>
+        <div class="buttons">
+          <button type="button" class="btn btn-yes" id="yesBtn">Yes!</button>
+          <button type="button" class="btn btn-no" id="noBtn">No</button>
+        </div>
+        <p class="no-msg" id="noMsg"></p>
+        <div class="crying-kitty" id="cryingKitty" aria-hidden="true">
+          <div class="kitty-character">
+            <img src="https://upload.wikimedia.org/wikipedia/en/0/05/Hello_Kitty_character.png" alt="Hello Kitty" width="100" height="100" loading="lazy" id="helloKittyImg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="kitty-emoji-fallback" style="display:none; font-size:4rem; line-height:1;">😿🎀</span>
+            <div class="kitty-tears" aria-hidden="true">
+              <span class="kitty-tear"></span>
+              <span class="kitty-tear"></span>
+            </div>
+          </div>
+          <p class="kitty-speech" id="kittySpeech">Pwease say yes... *sniff*</p>
+        </div>
+      </div>
+
+      <div class="success" id="success">
+        <p class="success-yay">YAY! 🎉</p>
+        <p class="success-title">You said yes!</p>
+        <div class="hearts-ring">
+          <span>💕</span><span>💗</span><span>💖</span><span>💝</span><span>💓</span><span>💕</span><span>💗</span><span>💖</span>
+        </div>
+        <div class="locket-wrap">
+          <div class="locket">
+            <div class="locket-half left"></div>
+            <div class="locket-half right"></div>
+            <div class="locket-inner">
+              <span class="heart-icon">💕</span>
+              <p class="locket-text">You're my Valentine</p>
+            </div>
+          </div>
+        </div>
+        <div class="hearts-burst">💕 💗 💖</div>
+        <p>You just made my day. Happy Valentine’s Day! 💝</p>
+        <p class="success-tagline">Best answer ever! ✨</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="celebration" id="celebration" aria-hidden="true"></div>
+
+  <div class="mobile-link-wrap" id="mobileLinkWrap">
+    Open on your phone (same Wi‑Fi): <a id="mobileUrl" href="#">...</a>
+  </div>
+
+  <script>
+    (function setMobileUrl() {
+      var wrap = document.getElementById('mobileLinkWrap');
+      var link = document.getElementById('mobileUrl');
+      var port = window.location.port || (window.location.protocol === 'https:' ? 443 : 80);
+      var mobileHost = '192.168.1.105';
+      var url = window.location.protocol + '//' + mobileHost + ':' + port;
+      if (link) { link.href = url; link.textContent = url; }
+    })();
+  </script>
+  <script>
+    (function () {
+      var card = document.querySelector('.card');
+      var questionWrap = document.querySelector('.question-wrap');
+      var successEl = document.getElementById('success');
+      var yesBtn = document.getElementById('yesBtn');
+      var noBtn = document.getElementById('noBtn');
+      var noMsg = document.getElementById('noMsg');
+      var celebration = document.getElementById('celebration');
+
+      var noMessages = [
+        "The No button is shy, try Yes! 💕",
+        "No? Really? Click Yes instead! 😊",
+        "That button doesn't work… try Yes!",
+        "Yes is the only button that works here! 💗",
+        "Nice try! Yes is right over there 👉",
+        "I think you meant Yes! 💖",
+        "No escaped! Come back and press Yes!",
+        "Yes is waiting for you! 💕",
+        "Wrong button! The pink one! 💗",
+        "Okay okay… now press Yes! 😄",
+        "Yes is the way! 💖",
+        "One more time… click Yes! 💕"
+      ];
+      var kittyLines = [
+        "Pwease say yes... *sniff*",
+        "You're breaking my heart! Say yes! 😿",
+        "Don't make me cry! Pwease press Yes! 💔",
+        "I'll be so sad... Say yes and I'll smile! 🥺",
+        "No? *tear* Click Yes and I'll be okay!",
+        "Hello Kitty is crying... Say yes! 😿💕",
+        "My little heart can't take it! Yes? 💗",
+        "*sniff sniff* Pretty please say yes!",
+        "I believed in you! Press Yes! 😿",
+        "One yes and I'll stop crying! Pwease!",
+        "You don't wanna make me sad forever... Yes? 💕",
+        "Say yes and we'll be so happy! 😿→😊"
+      ];
+      var noClickCount = 0;
+      var cryingKitty = document.getElementById('cryingKitty');
+      var kittySpeech = document.getElementById('kittySpeech');
+
+      function getRandomPosition() {
+        var cardRect = card.getBoundingClientRect();
+        var maxX = Math.min(window.innerWidth - noBtn.offsetWidth - 24, cardRect.right - noBtn.offsetWidth - 16);
+        var maxY = Math.min(window.innerHeight - noBtn.offsetHeight - 24, cardRect.bottom - noBtn.offsetHeight - 16);
+        var minX = Math.max(16, cardRect.left);
+        var minY = Math.max(16, cardRect.top);
+        var x = minX + Math.random() * (maxX - minX);
+        var y = minY + Math.random() * (maxY - minY);
+        return { x: x, y: y };
+      }
+
+      function moveNoButton() {
+        var pos = getRandomPosition();
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = pos.x + 'px';
+        noBtn.style.top = pos.y + 'px';
+        noBtn.style.transform = 'scale(1)';
+      }
+
+      function showNoMessage() {
+        var msg = noMessages[noClickCount % noMessages.length];
+        noMsg.textContent = msg;
+        noMsg.classList.remove('show');
+        noMsg.offsetHeight;
+        noMsg.classList.add('show');
+        if (cryingKitty && kittySpeech) {
+          cryingKitty.classList.add('show');
+          kittySpeech.textContent = kittyLines[noClickCount % kittyLines.length];
+        }
+        noClickCount++;
+      }
+
+      function createFallingHearts() {
+        var hearts = ['💕', '💗', '💖', '❤️', '💝', '💓'];
+        var sparkles = ['✨', '⭐', '🌟', '💫'];
+        var i, span, angle, dist, bx, by;
+
+        // Falling from top (hearts + sparkles)
+        for (i = 0; i < 30; i++) {
+          span = document.createElement('span');
+          span.textContent = Math.random() > 0.3 ? hearts[Math.floor(Math.random() * hearts.length)] : sparkles[Math.floor(Math.random() * sparkles.length)];
+          span.className = Math.random() > 0.5 ? 'fall' : 'sparkle';
+          span.style.left = Math.random() * 100 + '%';
+          span.style.setProperty('--sx', (Math.random() - 0.5) * 100 + 'px');
+          span.style.animationDelay = Math.random() * 1.5 + 's';
+          span.style.animationDuration = (3 + Math.random() * 2) + 's';
+          celebration.appendChild(span);
+          setTimeout(function (s) {
+            if (s.parentNode) s.parentNode.removeChild(s);
+          }, 6000, span);
+        }
+
+        // Burst from center (hearts flying out)
+        for (i = 0; i < 25; i++) {
+          angle = (i / 25) * Math.PI * 2 + Math.random() * 0.5;
+          dist = 150 + Math.random() * 200;
+          bx = Math.cos(angle) * dist + (Math.random() - 0.5) * 80 + 'px';
+          by = Math.sin(angle) * dist + (Math.random() - 0.5) * 80 + 'px';
+          span = document.createElement('span');
+          span.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+          span.className = 'burst';
+          span.style.setProperty('--bx', bx);
+          span.style.setProperty('--by', by);
+          span.style.animationDelay = (i * 0.02) + 's';
+          celebration.appendChild(span);
+          setTimeout(function (s) {
+            if (s.parentNode) s.parentNode.removeChild(s);
+          }, 3000, span);
+        }
+      }
+
+      yesBtn.addEventListener('click', function () {
+        questionWrap.classList.add('hide');
+        successEl.classList.add('show');
+        createFallingHearts();
+        document.body.style.overflow = 'hidden';
+      });
+
+      noBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        showNoMessage();
+        moveNoButton();
+      });
+
+      noBtn.addEventListener('touchstart', function (e) {
+        e.preventDefault();
+        showNoMessage();
+        moveNoButton();
+      }, { passive: false });
+
+      noBtn.addEventListener('mouseenter', function () {
+        if (noClickCount > 0) moveNoButton();
+      });
+    })();
+  </script>
+</body>
+</html>
